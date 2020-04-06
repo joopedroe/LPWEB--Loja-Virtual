@@ -1,35 +1,73 @@
-<h2>Loja Virtual</h2>
-<div class="area">
-<div>
-    <div class="produto" *ngFor="let produto of produtos">
-     <p>{{produto.nome}}
-     R$:{{produto.preco}} <button (click)="Adicionar(produto.id)">Comprar</button></p>
-      
-    </div>
-</div>
-<h3>Carrinho</h3>
-<div class="divTabela">
+<div class="container">
   <div>
-  <table class="tabela">
-    <thead>
-    <tr>
-    <th>Produto</th>
-    <th>Quantidade</th>
-    <th>Preço</th>
-  </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let produto of carrinho.produtos">
-      <td>{{produto.nome}}</td>
-      <td>{{produto.quant}} </td>
-      <td>{{produto.preco}}</td>
-      
-      
-    </tr>
-  </tbody>
-  <div class="total"> <h4>Total:</h4> <p>{{carrinho.total}}</p></div>
-  </table>
+    <div class="float-right">
+      <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#modelId">
+        <i class="fa fa-shopping-cart" aria-hidden="true"></i>Carrinho
+      </button>
+    </div>
+  </div>
+<h2>Loja Virtual</h2>
+
+  <div class="list-group" >
+      <div class="list-group-item" *ngFor="let produto of produtos">
+        <div class="float-right">
+          <div class="badge badge-primary produto__preco">{{produto.preco |currency:'BRL'}}
+          </div>
+          <div>
+            ou até 12 X {{(produto.preco/12) |currency:'BRL'}}
+          </div>
+          <br>
+          <button type="button" class="btn btn-success" (click)="comprar(produto)" data-toggle="modal" data-target="#modelId">Comprar</button>
+        </div>
+        <img class="float-left rounded mr-3" [src]="'assets/'+produto.id+'/'+produto.imagemDeDestaque" alt="" width="200px">
+      <div>
+      <div>
+        <strong>{{produto.nome}}</strong>
+      </div>
+      <div><span class="badge badge-secondary">{{produto.categoria}}</span></div>
+      <div>{{produto.descricao}}</div>
+
+      </div>
+  </div>
 </div>
 
-  
+<!-- Modal -->
+<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Carrinho de compras</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered table-stripded table-hover">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Quantidade</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pro of carrinho">
+              <td scope="row">{{pro.nome}}</td>
+              <td>{{pro.quantidade}}</td>
+              <td>{{(pro.quantidade*pro.preco) | currency:'BRL'}}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2">Total</td>
+              <td>{{calculaTotalCarrinho()|currency:'BRL'}}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
 </div>
